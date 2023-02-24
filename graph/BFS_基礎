@@ -1,0 +1,69 @@
+/*
+アルゴ式:https://algo-method.com/tasks/414/editorial
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define rep(i, n) for (ll i = 0; i < (ll)(n); i++)
+int main() {
+  // 入力
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> G(n);
+  rep(i, m) {
+    int a, b;
+    cin >> a >> b;
+    G[a].push_back(b);
+    G[b].push_back(a);
+  }
+  // スタート地点からの距離を保存する。-1はまだ探索されていないことを示す。
+  vector<int> dist(n, -1);
+
+  int start = 0;
+  dist[0] = start; // スタート地点そのものは距離０
+
+  queue<int> que;
+  que.push(start); // スタート地点を追加
+
+  // k手目に探索された頂点を格納
+  vector<vector<int>> node(n);
+  // map<頂点, k手目に探索>キューから取り出した頂点が何手目か調べるために保存
+  map<int, int> mp;
+  // 0手目を実行
+  node[0] = {start};
+  mp.emplace(start, 0);
+
+  // キューが空になるまで探索する。
+  // 探索は最大n手(0-indexでスタート地点が0手目)
+  // キューにプッシュされた頂点はその1手前の頂点の情報を持たないため、map<頂点,
+  // k手目に探索>に保存する。
+  //  頂点 v から 1 手で行ける頂点 next_v
+  //  を探索するタイミングで、vを何手目に探索したか確認してnext_kを更新する。
+
+  while (!que.empty()) {
+    // キューから頂点を取り出す
+    int v = que.front();
+    que.pop();
+
+    // 頂点 v から 1 手で行ける頂点 next_v を探索
+    int next_k = mp[v] + 1;
+    for (auto &&next_v : G[v]) {
+      // 頂点 next_v が探索済みであれば何もしない
+      if (dist[next_v] != -1) {
+        continue;
+      }
+      node[next_k].push_back(next_v);
+      mp.emplace(next_v, next_k);
+      dist[next_v] = dist[v] + 1;
+      que.push(next_v);
+    }
+  }
+  rep(i, n) {
+    sort(node[i].begin(), node[i].end());
+    for (auto &&x : node[i]) {
+      cout << x << " ";
+    }
+    cout << endl;
+  }
+}
