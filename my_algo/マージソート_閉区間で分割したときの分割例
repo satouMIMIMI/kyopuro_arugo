@@ -1,0 +1,50 @@
+/*
+閉区間のマージソート
+このmergeSort(A, 0, N-1)は 閉区間［0, N-1］で分割していく過程を出力する。
+左側の区間は[l,mid]で右側の区間を[mid +1,r]と区間を被らずに分割していくと、最終的に[0,1],[2,3],[4,5],[6,7]・・・・に分割される。
+ーーー>これに合わせて再帰の終了条件とmerge処理を書く。
+
+半開区間のマージソートは最終的に[0,2),[2,3),[3,5)・・・・に分割されるのが苦手だから使わない。
+*/
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+void mergeSort(vector<ll> &a, ll l, ll r) {
+  // 要素数N=1の場合は即リターンする。
+  if (r - l < 1) {
+    return;
+  }
+
+  ll mid = l + (r - l) / 2;
+  //分割結果を出力する
+  printf("mergeSort(%lld, %lld)  ", l, r);
+  printf("--->mergeSort(%lld, %lld),   mergeSort(%lld, %lld)\n", l, mid, (mid + 1), r);
+  mergeSort(a, l, mid);
+  mergeSort(a, mid + 1, r);
+
+  /*
+  merge処理を書く。
+  */
+
+
+}
+
+int main(void) {
+  // 入力
+  long long N;
+  cin >> N;
+  vector<long long> A(N); // 数列
+  for (int i = 0; i < N; ++i)
+    cin >> A[i];
+  mergeSort(A, 0, N - 1);
+}
+/*
+  mergeSortの入力と分割の例
+  10
+  658 299 47 507 122 969 449 68 513 800
+
+  
+  mergeSort(0, 1) -->　mergeSort(0, 0)　mergeSort(1,1)で初めてreturnして呼び出し元mergeSort(0, 1)でmergeを行う。
+  mergeSort(0, 1)の呼び出し元mergeSort(0, 2)でmergeSort(2, 2)を実行して即returnしてmergeSort(0, 2)のmergeを行う。
+  mergeSort(0, 4)のmergeSort(3, 4)を行う。・・・・
+*/
