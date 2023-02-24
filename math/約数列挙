@@ -11,7 +11,7 @@ vector<long long> calc_divisors(long long N) {
         // i は約数である
         res.push_back(i);
 
-        // N ÷ i も約数である (重複に注意)
+        // N ÷ i も約数である (重複に注意: i * i == N の場合は弾く)
         if (N / i != i) res.push_back(N / i);
     }
 
