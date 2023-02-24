@@ -1,0 +1,34 @@
+// 素因数分解
+// 460 = 2^2 x 5 x 23 の場合
+// 返り値は {{2, 2}, {5, 1}, {23, 1}}
+vector<pair<long long, long long> > prime_factorize(long long N) {
+    // 答えを表す可変長配列
+    vector<pair<long long, long long> > res;
+
+    // √N まで試し割っていく
+    for (long long p = 2; p * p <= N; ++p) {
+        // N が p で割り切れないならばスキップ
+        if (N % p != 0) {
+            continue;
+        }
+
+        // N の素因数 p に対する指数を求める
+        int e = 0;
+        while (N % p == 0) {
+            // N を p で割って指数を1増やす
+            N /= p;
+            ++e;
+        }
+
+        // 答えに追加
+        res.emplace_back(p, e);
+    }
+
+    // 素数が最後に残ることがありうる  
+    // 素数判定と約数列挙の計算量が√Nであることと、素因数分解を混同しないよう気をつけること
+    // Nの素因数は√Nより大きい数が含まれることがある
+    if (N != 1) {
+        res.emplace_back(N, 1);
+    }
+    return res;
+}
