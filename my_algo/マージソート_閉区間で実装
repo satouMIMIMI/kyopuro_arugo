@@ -1,0 +1,82 @@
+/*
+閉区間で分割するマージソートで昇順にソートする。
+左右に分割してmergeSortをする際に、左側の区間は[l,m]で右側の区間を[m+1,r]で区間を被らずに分割していくと、最終的に[0,1],[2,3],[4,5],[6,7]・・・・に分割される。
+https://atcoder.jp/contests/math-and-algorithm/tasks/math_and_algorithm_aa
+*/
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+// AtcCoderではmergeSortをmergeより先に書くと、mergeSortのコンパイルでmergeが定義されていないとしてエラーになる。
+void merge(vector<ll> &A, ll l, ll mid, ll r) {
+  // マージ対象を取得する配列
+  int numL = mid - l + 1;
+  int numR = r - mid;
+
+  vector<ll> L(numL); // l...mid のnumL個を取得
+  vector<ll> R(numR); // mid + 1...r　のnumR個を取得
+
+  for (int i = 0; i < numL; i++) {
+    L[i] = A[l + i]; // A[l]...A[m]を取得
+  }
+  for (int i = 0; i < numR; i++) {
+    R[i] = A[mid + 1 + i]; // A[m+1]...A[r]を取得
+  }
+
+  // 2つの配列をmergeする。
+  int i = 0; // index of L
+  int j = 0; // index of R
+  int k = l; // index of merged array
+
+  while (i < numL && j < numR) {
+    if (L[i] <= R[j]) {
+      A[k] = L[i];
+      i++;
+    } else {
+      A[k] = R[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < numL) {
+    A[k] = L[i];
+    i++;
+    k++;
+  }
+
+  while (j < numR) {
+    A[k] = R[j];
+    j++;
+    k++;
+  }
+}
+
+void mergeSort(vector<ll> &A, ll l, ll r) {
+  // 要素数N=1の場合は即リターンする。
+  if (r - l < 1)
+    return;
+
+  ll mid = l + (r - l) / 2;
+  mergeSort(A, l, mid);
+  mergeSort(A, mid + 1, r);
+  merge(A, l, mid, r);
+}
+
+int main(void) {
+  // 入力
+  long long N;
+  cin >> N;
+  vector<long long> A(N);
+  for (int i = 0; i < N; ++i) {
+    cin >> A[i];
+  }
+  mergeSort(A, 0, N - 1);
+  for (auto &&x : A)
+    printf("%lld  ", x);
+}
+/*
+mergeSortの入力例
+10
+658 299 47 507 122 969 449 68 513 800
+*/
