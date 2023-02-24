@@ -26,7 +26,7 @@ vector<pair<long long, long long> > prime_factorize(long long N) {
 
     // 素数が最後に残ることがありうる  
     // 素数判定と約数列挙の計算量が√Nであることと、素因数分解を混同しないよう気をつけること
-    // Nの素因数は√Nより大きい数が含まれることがある
+    // Nの素因数は√Nより大きい数が含まれることがある: 35の素因数 7
     if (N != 1) {
         res.emplace_back(N, 1);
     }
