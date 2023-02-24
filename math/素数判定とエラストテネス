@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+//ポイント：a以下の合成数は√a以下の素数で割り切れること。
+//アルゴ式で動作確認:https://algo-method.com/tasks/330
+
+// a >=1が前提を前提とし、１, 2...aが素数か判定した//A[0]...A[a]　をreturnする。
+template <typename T> vector<bool> Eratosthenes(T a) {    
+    vector<bool> A (a+1, true);
+    A[0] = A[1]= false;
+    if(a < 2) return A;
+
+    //for文開始時に初期値を設定-->条件式を判定するため、a = 2　の場合はfor文の処理を1度も実行せずにfor文を抜ける
+    for(long long i = 2; i * i <= a; i++){
+        if(!A[i]){continue;}
+        for(long long j = i * 2; j <= a ; j += i){
+            A[j] = false;
+        }
+    }
+    return A;
+}
+
+
+int main() {
+    // 入力
+    int N;
+    cin >> N;
+
+    // エラトステネスの篩
+    vector<bool> isprime = Eratosthenes(N);
+
+    // 答え
+    int res = 0;
+    for (int i = 2; i <= N; ++i) {
+        if (isprime[i]) ++res;
+    }
+    cout << res << endl;
+}
