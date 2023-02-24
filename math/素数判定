@@ -1,0 +1,9 @@
+template <typename T> bool sosuCheck(T n) {
+    if(n < 2) return false;    
+    for(ll i = 2; i * i <= (ll)n; i++){
+        if((ll)n % i ==0){
+            return false;
+        }
+    }
+	return true;
+}
