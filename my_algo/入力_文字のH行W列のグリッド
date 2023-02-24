@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+//Gridの出力テンプレート
+template<class T> void output_Grid(T& A){
+    long long size_H = A.size();
+    long long size_W = A.at(0).size();
+    for(long long i = 0; i < size_H; i++){ //行
+        for(int j = 0; j < size_W; j++){ //列
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+/*
+入力例
+3 5
+abcde
+fghij
+lmnop
+*/
+int main() {
+    int h,w;
+    cin >> h >> w;
+    vector<string> Grid(h);
+
+
+    //そのまま
+    for(auto &nx : Grid){cin >> nx;}
+    output_Grid(Grid);
+
+    //行列を転地
+    vector<string> Ts(w),Tt(w);
+    for(int i=0;i<h;i++){
+        for(int j=0;j<w;j++){
+            Ts[j].push_back(Grid[i][j]);
+        }
+    }
+    output_Grid(Ts);
+}
