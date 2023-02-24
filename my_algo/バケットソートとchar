@@ -1,0 +1,30 @@
+/*
+バケットソート
+連想配列 map<char,int> : charがkye, intのvalueを使う。
+文字列に対して、a-zがいくつ含まれいるか出力する。
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+  string s;
+  cin >> s;
+  map<char,int> mp;
+  //mapに文字列をcharに分割して格納する
+  for(auto &xx : s) {mp[xx]++;}
+  //charは内部で数値だからインクリメントできる。(ASCIIコード表でabcとABCは非連続なことに注意)
+  for(char i='a';i<='z';i++){
+    cout << i << " : " << mp[i] << "\n";
+  }
+  for(char i='A';i<='Z';i++){
+    cout << i << " : " << mp[i] << "\n";
+  }
+  for(char i='0';i<='9';i++){
+    cout << i << " : " << mp[i] << "\n";
+  }
+  return 0;
+}
+
+//ASCⅡコードのメモ　'0' --> 48(10進数), 
+//ASCⅡコードのメモ　'A' --> 65(10進数), 
+//ASCⅡコードのメモ　'a' --> 97(10進数), 
