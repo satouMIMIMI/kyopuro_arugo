@@ -1,0 +1,82 @@
+/*
+ 二分探索：Binary_search
+ AtCoder：典型アルゴリズム問題集
+ https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_a
+*/
+#include <bits/stdc++.h>
+using namespace std;
+int main(void) {
+  // 入力
+  long long N, K;
+  cin >> N >> K;
+  vector<long long> A(N); // 数列が昇順で与えられる
+  for (int i = 0; i < N; ++i) {
+    cin >> A[i];
+  }
+
+  // 二分探索
+  // Aに対してK以上である添字の最小値を求める場合、最終的にOKがK以上の最小値の添字、NGがK未満の最大値の添字となる
+  long long NG = -1, OK = N;
+  while (OK - NG > 1) {
+    long long mid = NG + (OK - NG) / 2;
+    if (A[mid] >= K)
+      // midより右側は探索不要。
+      OK = mid;
+    else
+      // midより左側は探索不要。
+      NG = mid;
+  }
+
+  // OK = Nの場合、AにK以上の値が存在しない。
+  if (!(OK < N)) {
+    cout << -1 << endl;
+
+  } else {
+    cout << OK << endl;
+  }
+  return 0;
+}
+
+/*
+K以上の最小を求める2分探索を具体的に考えてみる。
+
+・条件を満たす値が無い場合（数列の値全て < Kの場合）
+探索範囲は右側のみが残っていき、whileの最後は次となる。
+NG = (N-3 || N-4), OK = N ;
+-> mid = NG + (OK-NG)/2 ;  --> mid = N-2; (NG = N-3なら mid = N-3 + 1, NG = N-4なら mid = N-4 + 2)
+if(A[mid] >= K) -> falseのため、 NG = mid;
+NG = N-2, OK = N ;
+-> mid = NG + (OK-NG)/2 ;  --> mid = N-1;
+if(A[mid] >= K) -> falseのため、 NG = mid;
+NG = N-1, OK = N  でwhileを抜ける。
+while文終了後にOK = Nとなるため、if(!(OK < N))で条件分岐して-1を出力する
+
+・配列の要素数N = 1の場合で条件を満たさない場合。
+1度だけwhile文が実行されて次の状況で行う。
+NG = -1, OK = 1
+-> mid = NG + (OK-NG)/2 -> mid = 0
+if(A[mid] >= K) -> falseのため、 NG = mid;
+OK = 1, NG = 0
+while文終了後にOK = Nとなるため、if(!(OK < N))の場合で-1を出力する
+
+・全ての値が条件を満たす場合（数列の値全て >= Kの場合）
+探索範囲は左側のみが残っていき、whileの最後の実行は次の状況で行う。
+NG = -1, OK = 1 || 2
+-> mid = NG + (OK-NG)/2 -> mid = 0
+if(A[mid] >= K) -> trueのため、 OK = mid;
+NG = -1, OK = 0 でwhileを抜ける。
+while文終了後にOK = 0となり、if(!(OK < N))で条件分岐してOKを出力する
+
+・配列の要素数N = 1の場合で条件を満たす場合
+1度だけwhile文が実行されて次の状況で行う。
+NG = -1, OK = 1
+-> mid = NG + (OK-NG)/2 -> mid = 0
+if(A[mid] >= K) -> trueのためOK = mid;
+NG = -1, OK = 0 でwhileを抜ける。
+while文終了後にOK = 0となり、if(!(OK < N))で条件分岐してOKを出力する
+
+計算時の注意
+(a+b)/2 と　(a + (b-a)/2)はa, bが整数なら等しく、オーバーフロー対策で(a + (b-a)/2)を使う。
+(a, bが偶数、奇数の場合を計算すれば証明できる。)
+もしa, bがdoubleだと切り捨てのタイミングが違うから一致しないかも。
+*/
