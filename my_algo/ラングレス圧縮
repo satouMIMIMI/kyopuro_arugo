@@ -1,0 +1,83 @@
+/*
+ランレングス圧縮 【連長圧縮】 RLE / Run Length Encoding
+ループ:i番目の文字がi+1番目の文字と異なるなら、i番目の文字と連続する文字数をpairで格納することをN-2番目（最後の文字の1つ前）まで繰り返す。
+N-2番目とN-1番目が同じ文字なら、for文抜けた後のvec.push_backでまとめて格納する。
+N-2番目とN-1番目が異なる文字なら、forループの最後でN-2番目の文字までvecに格納して、for文抜けた後vec.push_backで最後の文字をvecに格納する。
+
+文字数カウントのためにint cnt=1;で初期化することと、cnt++;の位置が上手い。
+*/
+// vectorをreturnするver
+vector<pair<char, int>> rle(string s) {
+  // returnするvector
+  vector<pair<char, int>> vec;
+
+  // 連続する文字数カウントの初期化
+  int cnt = 1;
+
+  // s.size()はintegerのため、intに変換する。
+  int N = (int)s.size();
+
+  for (int i = 0; i <= N - 2; i++) {
+    if (s[i] != s[i + 1]) {
+      vec.push_back({s[i], cnt});
+      cnt = 0;
+    }
+    cnt++;
+  }
+  vec.push_back({s.back(), cnt});
+  return vec;
+}
+
+// vectorが参照渡しver
+void rle(string s, vector<pair<char, int>> &vec) {
+
+  // 連続する文字数カウントの初期化
+  int cnt = 1;
+
+  // s.size()はintegerのため、intに変換する。
+  int N = (int)s.size();
+
+  for (int i = 0; i <= N - 2; i++) {
+    if (s[i] != s[i + 1]) {
+      vec.push_back({s[i], cnt});
+      cnt = 0;
+    }
+    cnt++;
+  }
+  vec.push_back({s.back(), cnt});
+}
+
+/*
+↓動作確認用
+https://atcoder.jp/contests/abc019/tasks/abc019_2
+*/
+#include <bits/stdc++.h>
+using namespace std;
+void rle(string s, vector<pair<char, int>> &vec) {
+
+  // 連続する文字数カウントの初期化
+  int cnt = 1;
+
+  // s.size()はintegerのため、intに変換する。
+  int N = (int)s.size();
+
+  for (int i = 0; i <= N - 2; i++) {
+    if (s[i] != s[i + 1]) {
+      vec.push_back({s[i], cnt});
+      cnt = 0;
+    }
+    cnt++;
+  }
+  vec.push_back({s.back(), cnt});
+}
+vector<pair<char, int>> answer;
+int main(void) {
+  string s;
+  cin >> s;
+  rle(s, answer);
+  for (auto &&xx : answer) {
+    printf("%c%d", xx.first, xx.second);
+  }
+  printf("\n");
+  return 0;
+}
