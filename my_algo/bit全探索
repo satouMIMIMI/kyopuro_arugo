@@ -1,0 +1,57 @@
+/*
+    bit全探索
+    例題ABC289C
+    https://atcoder.jp/contests/abc289/tasks/abc289_c
+*/
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define rep(i, n) for (long long i = 0; i < (long long)(n); i++)
+int main() {
+  // 入力
+  int  n, m;
+  cin >> n >> m;
+  vector<vector<int>> A(m);
+
+  // m個の集合の整数を受け取る。0-index
+  rep(i, m) {
+    int c;
+    cin >> c;
+    rep(x, c) {
+      int temp;
+      cin >> temp;
+      A[i].push_back(temp);
+    }
+  }
+
+  ll ans = 0;
+
+  ll max_mask = 1LL << m;
+  // ビット全探索    i= 0 から2^(m-1)で2^(m)パターン。
+  rep(i, max_mask) {
+    // 1からn を持つ集合があるかカウント。
+    vector<bool> count(n + 1, false);
+
+    // bitsetの桁数指定は定数のみ可能。zentansaku：iを11桁の2進数に変換したもの。
+    bitset<11> zentansaku(i);
+
+    rep(j, m) {
+      // bitset: 変数iの2進数でj桁目(0-index)のビットが1ならtrue, 0ならfalseを返す。
+      // ここでは集合が0-indexだからこれでOK
+      if (zentansaku.test(j)) {
+        for (auto &&xx : A[j]) {
+          count[xx] = true;
+        }
+      }
+    }
+
+    bool flag = true;
+    for (int check = 1; check <= n; ++check) {
+        flag &= count[check];
+    }
+    ans += flag;
+  }
+
+  cout << ans <<endl;
+  return 0;
+}
