@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 using namespace std;
 
 /*  関数名      ntodec(const char c)
@@ -25,13 +26,12 @@ int ntodec(const char c){
            使用ライブラリ  なし
 */
 char decton(const int n){
-    if((0 <= c) && (c <= 9)){
-        return (char)(c + '0');
+    if((0 <= n) && (n <= 9)){
+        return (char)(n + '0');
     }
-    if((10 <= c) && (c <= 35)){
-        return (char)(c + '7');
+    if((10 <= n) && (n <= 35)){
+        return (char)(n + '7');
     }
-    default : return '\0';
 }
 
 /*  関数名          pow_ll(long long x, long long n)
@@ -50,7 +50,7 @@ long long pow_ll(long long x, long long n){
 
 /*  関数名          n_ary(string str, int n, int m)
     説明            n 進数で表現された数値を文字列 str で受け取り、m 進数に直して文字列で出力する。
-    使用ライブラリ  string
+    使用ライブラリ     string
     使用自作関数    ntodec, decton, pow_ll
     制約事項        36進数までの対応。負の値には対応していない。
 */
@@ -58,7 +58,7 @@ string n_ary(string str, int n, int m){
     unsigned long tmp = 0;
     string ret;
 
-    for(int i=0; i<str.length(); i++){
+    for(int i=0; i<(int)str.length(); i++){
         tmp += (unsigned long) ntodec(str[str.length()-1-i]) * pow_ll(n, i);
     }
 
@@ -71,15 +71,39 @@ string n_ary(string str, int n, int m){
 }
 
 
+/*
+動作確認:8進数→9進数
+https://atcoder.jp/contests/typical90/tasks/typical90_bo
+*/
+
+// int main(){
+//   string N;
+//   int K;
+//   cin >> N >> K;
+//   string temp;
+//   for(int i = 1; i<=K; ++i){
+//         N =  n_ary(N, 8, 9);
+//         N =  regex_replace(N, regex("8"), "5");
+//   }
+//   // stoiする場合は変換後のオーバーフローに注意
+//   // N == "0"の場合だけ先頭の余分な 0は消さないこと
+//   if(N != "0"){
+//     N = regex_replace(N, regex("^0+"), "5");
+//   }
+//   cout << N <<endl;
+// }
+
+
+/*
+動作確認:10進数→36進数
+https://atcoder.jp/contests/past202012-open/tasks/past202012_c?lang=ja
+*/
+
 int main(){
   string N;
-  int K;
-  cin >> N >> K;
-  string temp;
-  for(int i = 1; i<=K; ++i){
-        N =  n_ary(N, 8, 9);
-        
-  }
-  
-
+  cin >> N;
+  N =  n_ary(N, 10, 36);
+  // stoiする場合は変換後のオーバーフローに注意
+  // N == "0"の場合だけ先頭の余分な 0は消さないこと
+  cout << N <<endl;
 }
