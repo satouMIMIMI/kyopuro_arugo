@@ -1,0 +1,66 @@
+set<pair <ll, ll>> G; の使い方
+G.insert(make_pair(a,b));
+G.emplace(a,b); 
+emplaceは引数の値をカンマ区切りで渡し、要素が直接コンテナ内に構築されるためmake_pairが不要です。
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    std::set<std::pair<std::string, int>> set = {
+        {"A", 4}, {"B", 4}, {"C", 1}, {"A", 0}, {"B", 3}, {"1", 99}, {"1", 0}, {"A", -1}, {"a", 99}, {"c", 0}
+    };
+ 
+    for (auto const &p: set) {
+        std::cout << p.first << " " << p.second << std::endl;
+    }
+ 
+    return 0;
+}
+
+/*
+1番目の要素で比較 → 2番目の要素で比較する。
+
+1 0
+1 99
+A -1
+A 0
+A 4
+B 3
+B 4
+C 1
+a 99
+c 0
+*/
+
+/*
+setはstd: less関数を使うことでデフォルトの順序をオーバーライドできる。
+*/
+#include <bits/stdc++.h>
+using namespace std;
+// 2番目の要素は
+namespace std {
+    template<typename T1, typename T2>
+    struct less<std::pair<T1, T2>>
+    {
+        bool operator()(const std::pair<T1, T2> &l, const std::pair<T1, T2> &r) const {
+            if (l.first == r.first) {
+                return l.second > r.second;
+            }
+            return l.first < r.first;
+        }
+    };
+}
+int main(){
+    std::set<std::pair<std::string, int>> set = {
+        {"A", 4}, {"B", 4}, {"C", 1}, {"A", 0}, {"B", 3}, {"1", 99}, {"1", 0}, {"A", -1}, {"a", 99}, {"c", 0}
+    };
+ 
+    for (auto const &p: set) {
+        std::cout << p.first << " " << p.second << std::endl;
+    }
+ 
+    return 0;
+}
