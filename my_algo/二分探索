@@ -1,0 +1,61 @@
+/*
+π と図形問題
+角度は度数法と弧度法の2種類がある。
+度数法: 角度を単位円の1周で360°と定義する。
+弧度法: 角度を単位円の1週で2πと定義する。(単位円の「弧長」)
+→ (度数法の角度) / 360 = (弧度法の角度) / 2π
+  (度数法の角度)  = (弧度法の角度) * 180 / π
+  (弧度法の角度)  = ((度数法の角度) * π /180
+ABC281D
+図形問題だが2文探索でも解ける。
+角度θで溢れる水の面積を f(θ)とすると、
+この問題はf(θ)=xという方程式を解けという問題だと言える。
+このような方程式の解を求める方法として二分探索が有効。
+https://drken1215.hatenablog.com/entry/2020/04/26/193500
+*/
+
+/*
+入力
+22 75 24126
+想定解
+66.3790171829
+コードの出力
+68.6984361543
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+const double PI = 3.1415926536;
+int main() {
+  double a, b, x;
+  cin >> a >> b >> x;
+  x /= a;
+
+  auto f = [&](double t){
+      if(t < PI/4){
+        // こぼれる水が台形
+        return (b + (b - a * tan(t))) * a / 2;
+      }else{
+        // こぼれる水が三角形
+        return b * (b / tan(t)) /2;
+      }
+  };
+
+  double left = 0, right = PI/2;
+  for(int iter = 0; iter < 10000; ++iter){
+      double theta = (left + right) / 2;
+      //f(theta)で角度θで溢れる水の面積を求める。
+      if(f(theta) > x){
+          // こぼれてないから傾きを増やす。
+          left = theta;
+      } else{
+          // こぼれてるから傾きを減らす
+          right = theta;
+      }
+
+  }
+
+  cout << fixed << setprecision(10);
+  cout << left * 180 / PI <<endl;
+  return 0;
+}
