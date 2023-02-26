@@ -1,0 +1,28 @@
+/*
+π と図形問題
+角度は度数法と弧度法の2種類がある。
+度数法: 角度を単位円の1周で360°と定義する。
+弧度法: 角度を単位円の1週で2πと定義する。(単位円の「弧長」)
+→ (度数法の角度) / 360 = (弧度法の角度) / 2π
+ABC281D
+常に水面と地面が平行であることを利用して幾何をする。
+https://drken1215.hatenablog.com/entry/2020/04/26/193500
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+const double PI = 3.1415926536;
+int main() {
+  double a, b, x;
+  cin >> a >> b >> x;
+  // ２次元の問題に帰着できる。
+  x /= a;
+  cout << fixed << setprecision(10);
+  if (x > a * b / 2) {
+    // atan2: は底辺と高さから弧度法の角度を求める。
+    cout << atan2((a * b - x) * 2, a * a) * 180 / PI << endl;
+  } else {
+    cout << atan2(b * b, x * 2) * 180 / PI << endl;
+  }
+  return 0;
+}
