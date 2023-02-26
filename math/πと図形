@@ -19,9 +19,11 @@ int main() {
   x /= a;
   cout << fixed << setprecision(10);
   if (x > a * b / 2) {
+    // 水がこぼれる時は台形
     // atan2: は底辺と高さから弧度法の角度を求める。
     cout << atan2((a * b - x) * 2, a * a) * 180 / PI << endl;
   } else {
+    // 水がこぼれる時は三角形
     cout << atan2(b * b, x * 2) * 180 / PI << endl;
   }
   return 0;
