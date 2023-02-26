@@ -31,31 +31,34 @@ int main() {
   cin >> a >> b >> x;
   x /= a;
 
-  auto f = [&](double t){
-      if(t < PI/4){
-        // こぼれる水が台形
-        return (b + (b - a * tan(t))) * a / 2;
-      }else{
-        // こぼれる水が三角形
-        return b * (b / tan(t)) /2;
-      }
+  // 角度θでこぼれる水の面積を求める。
+  auto f = [&](double t) {
+    // 3WAする。
+    if (t < PI / 4) {
+
+    // ↓だとACする。
+    // if (tan(t) <= b/a){
+      // こぼれる水が台形
+      return a * b - a * (a * tan(t)) / 2;
+    } else {
+      // こぼれる水が三角形
+      return b * (b / tan(t)) / 2;
+    }
   };
 
-  double left = 0, right = PI/2;
-  for(int iter = 0; iter < 10000; ++iter){
-      double theta = (left + right) / 2;
-      //f(theta)で角度θで溢れる水の面積を求める。
-      if(f(theta) > x){
-          // こぼれてないから傾きを増やす。
-          left = theta;
-      } else{
-          // こぼれてるから傾きを減らす
-          right = theta;
-      }
-
+  double left = 0, right = PI / 2;
+  for (int iter = 0; iter < 100000; ++iter) {
+    double theta = (left + right) / 2;
+    if (f(theta) > x) {
+      // thetaで水はこぼれないから傾きを増やす。
+      left = theta;
+    } else {
+      // thetaで水はこぼれてるから傾きを減らす
+      right = theta;
+    }
   }
 
   cout << fixed << setprecision(10);
-  cout << left * 180 / PI <<endl;
+  cout << left * 180 / PI << endl;
   return 0;
 }
