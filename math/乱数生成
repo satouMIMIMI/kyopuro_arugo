@@ -1,0 +1,27 @@
+/*
+指定した範囲でランダムな整数値を取得する
+https://cpprefjp.github.io/reference/random/uniform_int_distribution.html
+
+指定した範囲でランダムな実数が欲しい場合は  std::uniform_real_distribution<double> を使うこと 
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define rep(i, n) for (ll i = 0; i < (ll)(n); i++)
+int main() {
+  // 真の乱数を生成器を取得。（seed_gen()で乱数を生成する。）
+  std::random_device seed_gen;
+
+  // default_random_engineで処理環境に適切な擬似乱数生成エンジンを自動選択して、シード値を入れる。
+  std::default_random_engine engine(seed_gen());
+
+  // 指定された範囲の値が等確率で発生するよう離散分布させる。
+  std::uniform_int_distribution<int> dist(1, 9);
+
+    for (int i = 0; i < 10; ++i) {
+        std::cout << dist(engine) << endl;
+    }
+
+    return 0;
+}
