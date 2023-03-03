@@ -2,10 +2,11 @@
 using namespace std;
 
 /*
-    説明        サブルーチン1：N進→10進変換 (N≦36)
-               char で 文字{0,1,2,...,9,A,B,...,Z} を受け取り、
-　　　　　　　　　　　          int で {0,1,2,...9,10,11,...,35}に直して返す。
-　　　　　　　　　　　          それ以外の文字が来た場合は-1を返す。
+    説明        
+    サブルーチン1： N進→10進変換 (N≦36)
+    char で 文字{0,1,2,...,9,A,B,...,Z} を受け取り、
+　　　　　　　　int で {0,1,2,...9,10,11,...,35}に直して返す。
+　　　　　　 それ以外の文字が来た場合は-1を返す。
 */
 int ntodec(const char c){
     if(('0' <= c) && (c <= '9')){
@@ -18,9 +19,9 @@ int ntodec(const char c){
 }
 
 /*
-    説明   サブルーチン2：10進→N進変換 (N≦36)         
-          int で 数値 0〜35 を受け取り、文字{0,1,2,...,9,A,B,...,Z}に直して char で返す。
-　　　　　　　　　　　     それ以外の数字が来た場合は \0 を返す。
+    説明  
+    サブルーチン2：10進→N進変換 (N≦36)         
+    int で 数値 0〜35 を受け取り、文字{0,1,2,...,9,A,B,...,Z}に直して char で返す。
 */
 char decton(const int n){
     if((0 <= n) && (n <= 9)){
@@ -31,9 +32,10 @@ char decton(const int n){
     }
 }
 
-/*  関数名
-    説明            サブルーチン3：べき乗計算（long long型）
-                    x^n を計算する。long long 対応
+/* 
+    説明
+    サブルーチン3：べき乗計算（long long型）
+    x^n を計算する。long long 対応
 */
 long long pow_ll(long long x, long long n){
     long long ret = x;
@@ -53,10 +55,12 @@ string n_ary(string str, int n, int m){
     unsigned long tmp = 0;
     string ret;
 
+    // n進→10進変換 (1桁目から処理する)
     for(int i=0; i<(int)str.length(); i++){
-        tmp += (unsigned long) ntodec(str[str.length()-1-i]) * pow_ll(n, i);
+        tmp += (unsigned long) ntodec(str[str.length()-1 -i]) * pow_ll(n, i);
     }
 
+    // 10進数→m進数
     if(tmp==0) return "0";
     while(tmp!=0){
         ret = decton(tmp%m) + ret;
