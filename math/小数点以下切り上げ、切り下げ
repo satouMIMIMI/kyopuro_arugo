@@ -1,0 +1,17 @@
+/*
+https://cpprefjp.github.io/reference/cmath/ceil.html
+小数点以下切り上げはceil、　小数点以下切り捨ては　floor()
+
+戻り値がdoucleであることに注意。
+double ceil(double x);
+double floor(double x);
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  printf("%lf\n", floor(3.25));
+
+  return 0;
+}
